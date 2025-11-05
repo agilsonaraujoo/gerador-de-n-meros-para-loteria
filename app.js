@@ -7,6 +7,7 @@
   const resultEl = document.getElementById('result');
   const historyEl = document.getElementById('history');
   const bannedEl = document.getElementById('banned');
+  const downloadBtn = document.getElementById('download');
 
   const HISTORY_LIMIT = 5;
   const history = [];
@@ -106,6 +107,11 @@
       copyBtn.disabled = false;
       copyBtn.dataset.clipboard = formatGames(games);
       clearBtn.disabled = false;
+      if(downloadBtn){
+        downloadBtn.disabled = false;
+        downloadBtn.dataset.text = formatGames(games);
+        downloadBtn.dataset.filename = `${gameEl.value}-${new Date().toISOString().slice(0,19).replace(/[:T]/g,'-')}.txt`;
+      }
 
       const snapshot = formatGames(games);
       history.unshift(snapshot);
@@ -114,6 +120,24 @@
     }catch(e){
       alert(e.message);
     }
+  }
+
+  function onDownload(){
+    const text = (downloadBtn && downloadBtn.dataset.text) || '';
+    if(!text){
+      alert('Nenhum conteúdo para baixar. Gere números primeiro.');
+      return;
+    }
+    const filename = (downloadBtn && downloadBtn.dataset.filename) || 'jogos.txt';
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
   }
 
   function parseBanned(text){
@@ -139,9 +163,15 @@
     delete copyBtn.dataset.clipboard;
     copyBtn.disabled = true;
     clearBtn.disabled = true;
+    if(downloadBtn){
+      delete downloadBtn.dataset.text;
+      delete downloadBtn.dataset.filename;
+      downloadBtn.disabled = true;
+    }
   }
 
   genBtn.addEventListener('click', onGenerate);
   copyBtn.addEventListener('click', onCopy);
   clearBtn.addEventListener('click', onClear);
+  if(downloadBtn) downloadBtn.addEventListener('click', onDownload);
 })();
