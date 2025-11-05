@@ -37,29 +37,32 @@
     return Array.from(set).sort((a,b) => a - b);
   }
 
-  function render(numbers){
-    // Accepts an array of numbers (single game) or array of arrays (multiple games)
-    resultEl.innerHTML = '';
-    const frag = document.createDocumentFragment();
-    const isMulti = Array.isArray(numbers[0]);
-    const rows = isMulti ? numbers : [numbers];
+  function createBadge(n){
+    const b = document.createElement('div');
+    b.className = 'badge';
+    b.textContent = String(n).padStart(2, '0');
+    return b;
+  }
 
+  function renderRows(rows){
+    const frag = document.createDocumentFragment();
     rows.forEach((nums, idx) => {
       const line = document.createElement('div');
       line.style.display = 'flex';
       line.style.flexWrap = 'wrap';
       line.style.gap = '10px';
       line.style.marginTop = idx === 0 ? '0' : '10px';
-      nums.forEach(n => {
-        const b = document.createElement('div');
-        b.className = 'badge';
-        b.textContent = String(n).padStart(2, '0');
-        line.appendChild(b);
-      });
+      nums.forEach(n => line.appendChild(createBadge(n)));
       frag.appendChild(line);
     });
+    return frag;
+  }
 
-    resultEl.appendChild(frag);
+  function render(numbers){
+    resultEl.innerHTML = '';
+    const isMulti = Array.isArray(numbers[0]);
+    const rows = isMulti ? numbers : [numbers];
+    resultEl.appendChild(renderRows(rows));
     const helper = document.createElement('div');
     helper.className = 'helper';
     helper.textContent = isMulti ? 'Múltiplos jogos em ordem crescente.' : 'Números gerados em ordem crescente.';
