@@ -5,6 +5,10 @@
   const clearBtn = document.getElementById('clear');
   const qtyEl = document.getElementById('qty');
   const resultEl = document.getElementById('result');
+  const historyEl = document.getElementById('history');
+
+  const HISTORY_LIMIT = 5;
+  const history = [];
 
   const RULES = {
     megasena: { picks: 6, min: 1, max: 60 },
@@ -53,6 +57,30 @@
     resultEl.appendChild(helper);
   }
 
+  function formatGames(games){
+    return games.map(arr => arr.join(', ')).join('\n');
+  }
+
+  function renderHistory(){
+    if(!historyEl) return;
+    historyEl.innerHTML = '';
+    const title = document.createElement('h2');
+    title.textContent = 'Histórico (últimos 5)';
+    title.className = 'history-title';
+    historyEl.appendChild(title);
+    const list = document.createElement('ol');
+    list.className = 'history-list';
+    history.forEach(item => {
+      const li = document.createElement('li');
+      li.className = 'history-item';
+      const pre = document.createElement('pre');
+      pre.textContent = item;
+      li.appendChild(pre);
+      list.appendChild(li);
+    });
+    historyEl.appendChild(list);
+  }
+
   function currentRule(){
     return RULES[gameEl.value] || RULES.megasena;
   }
@@ -66,9 +94,13 @@
     }
     render(q === 1 ? games[0] : games);
     copyBtn.disabled = false;
-    const lines = games.map(arr => arr.join(', '));
-    copyBtn.dataset.clipboard = lines.join('\n');
+    copyBtn.dataset.clipboard = formatGames(games);
     clearBtn.disabled = false;
+
+    const snapshot = formatGames(games);
+    history.unshift(snapshot);
+    while(history.length > HISTORY_LIMIT) history.pop();
+    renderHistory();
   }
 
   async function onCopy(){
