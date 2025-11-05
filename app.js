@@ -2,6 +2,7 @@
   const gameEl = document.getElementById('game');
   const genBtn = document.getElementById('generate');
   const copyBtn = document.getElementById('copy');
+  const clearBtn = document.getElementById('clear');
   const resultEl = document.getElementById('result');
 
   const RULES = {
@@ -47,6 +48,7 @@
     render(nums);
     copyBtn.disabled = false;
     copyBtn.dataset.clipboard = nums.join(', ');
+    clearBtn.disabled = false;
   }
 
   async function onCopy(){
@@ -61,6 +63,14 @@
     }
   }
 
+  function onClear(){
+    resultEl.innerHTML = '';
+    delete copyBtn.dataset.clipboard;
+    copyBtn.disabled = true;
+    clearBtn.disabled = true;
+  }
+
   genBtn.addEventListener('click', onGenerate);
   copyBtn.addEventListener('click', onCopy);
+  clearBtn.addEventListener('click', onClear);
 })();
