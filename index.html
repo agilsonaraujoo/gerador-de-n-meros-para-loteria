@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gerador de Números para Loteria</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>Gerador de Números para Loteria</h1>
+
+    <section class="controls">
+      <label for="game">Modalidade</label>
+      <select id="game">
+        <option value="megasena">Mega-Sena (6 de 1-60)</option>
+        <option value="quina">Quina (5 de 1-80)</option>
+        <option value="lotofacil">Lotofácil (15 de 1-25)</option>
+      </select>
+
+      <button id="generate">Gerar números</button>
+      <button id="copy" disabled>Copiar</button>
+    </section>
+
+    <section class="result" id="result" aria-live="polite"></section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
