@@ -17,12 +17,30 @@
         <option value="quina">Quina (5 de 1-80)</option>
         <option value="lotofacil">Lotofácil (15 de 1-25)</option>
       </select>
+      <label for="qty">Qtd. jogos</label>
+      <select id="qty">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+      </select>
+      <label for="banned">Banidos</label>
+      <input id="banned" type="text" placeholder="ex.: 13, 22, 45" />
 
       <button id="generate">Gerar números</button>
       <button id="copy" disabled>Copiar</button>
+      <button id="clear" disabled>Limpar</button>
+      <button id="download" disabled>Baixar TXT</button>
     </section>
 
     <section class="result" id="result" aria-live="polite"></section>
+    <section class="history" id="history" aria-live="polite"></section>
   </main>
 
   <script src="app.js"></script>
